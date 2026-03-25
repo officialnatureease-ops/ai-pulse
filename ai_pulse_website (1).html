@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Pulse — AI News & Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --red:#e8202a;--navy:#1a2332;--blue:#1a56db;
+  --blue-soft:#eff6ff;--gray-50:#f9fafb;--gray-100:#f3f4f6;
+  --gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;
+  --gray-800:#1f2937;--white:#ffffff;--text:#1a1a1a;
+  --font-head:'Playfair Display',Georgia,serif;
+  --font-body:'Source Sans 3',sans-serif;
+  --font-read:'Source Serif 4',Georgia,serif;
+  --max-w:1200px;--border:1px solid var(--gray-200);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);color:var(--text);background:#fff;font-size:16px;line-height:1.6}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font-body);cursor:pointer}
+.container{max-width:var(--max-w);margin:0 auto;padding:0 24px}
+.tag{display:inline-block;background:var(--red);color:#fff;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:2px}
+.tag.blue{background:var(--blue)}.tag.navy{background:var(--navy)}.tag.gray{background:var(--gray-600)}.tag.green{background:#059669}
+
+/* TOPBAR */
+.topbar{background:var(--navy);color:#fff;font-size:12px;padding:7px 0;overflow:hidden}
+.topbar-inner{display:flex;align-items:center;gap:20px}
+.topbar-label{background:var(--red);padding:2px 10px;font-weight:700;letter-spacing:1px;white-space:nowrap;flex-shrink:0;border-radius:2px}
+.ticker-wrap{overflow:hidden;flex:1}
+.ticker-track{display:inline-flex;gap:48px;white-space:nowrap;animation:ticker 35s linear infinite}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tick{opacity:.8}
+
+/* HEADER */
+header{border-bottom:3px solid var(--navy);background:#fff;position:sticky;top:0;z-index:200}
+.header-main{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:16px}
+.logo{font-family:var(--font-head);font-size:36px;font-weight:800;color:var(--navy);letter-spacing:-1px;line-height:1}
+.logo span{color:var(--red)}
+.logo-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gray-400);margin-top:2px}
+.hdate{font-size:12px;color:var(--gray-400);white-space:nowrap}
+.hactions{display:flex;gap:10px;align-items:center}
+.btn-sub{background:var(--red);color:#fff;font-size:13px;font-weight:600;padding:8px 20px;border:none;border-radius:3px;transition:background .2s}
+.btn-sub:hover{background:#c0171f}
+nav{border-top:var(--border);overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+.nav-ul{display:flex;list-style:none}
+.nav-ul li a{display:block;padding:11px 16px;font-size:13px;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:.5px;border-bottom:3px solid transparent;margin-bottom:-3px;white-space:nowrap;transition:color .15s,border-color .15s}
+.nav-ul li a:hover,.nav-ul li a.active{color:var(--red);border-bottom-color:var(--red)}
+
+/* MARKETS */
+.markets-bar{background:var(--gray-50);border-top:var(--border);border-bottom:var(--border);padding:9px 0;overflow:hidden}
+.markets-inner{display:flex;gap:28px;align-items:center;overflow-x:auto;scrollbar-width:none}
+.markets-inner::-webkit-scrollbar{display:none}
+.mi{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.mn{font-size:12px;font-weight:700;color:var(--gray-800)}
+.mp{font-size:12px;color:var(--gray-600)}
+.mc{font-size:11px;font-weight:700}
+.up{color:#059669}.down{color:var(--red)}
+
+/* HERO */
+.hero-section{background:var(--gray-50);border-bottom:var(--border);padding:28px 0}
+.hero-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:28px;align-items:start}
+.hero-img-wrap{position:relative;border-radius:4px;overflow:hidden;aspect-ratio:16/9;background:var(--gray-200);margin-bottom:14px}
+.hero-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.hero-img-wrap:hover img{transform:scale(1.02)}
+.img-caption{font-size:11px;color:var(--gray-400);margin-top:5px;font-style:italic}
+.htag-row{display:flex;gap:8px;margin-bottom:10px;align-items:center}
+.hero-title{font-family:var(--font-head);font-size:clamp(22px,3.2vw,36px);font-weight:800;line-height:1.15;margin-bottom:12px;color:var(--navy)}
+.hero-title a:hover{color:var(--red)}
+.hero-exc{font-size:15px;color:var(--gray-600);font-family:var(--font-read);line-height:1.7;margin-bottom:12px}
+.hero-meta{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--gray-400)}
+.hero-meta .author{font-weight:600;color:var(--gray-600)}
+.dot{opacity:.4}
+.side-stack{display:flex;flex-direction:column}
+.side-card{display:flex;gap:12px;padding:14px 0;border-bottom:var(--border);align-items:flex-start}
+.side-card:last-child{border-bottom:none}
+.sc-img{width:88px;height:64px;border-radius:3px;object-fit:cover;flex-shrink:0;background:var(--gray-200)}
+.sc-title{font-family:var(--font-head);font-size:14px;font-weight:700;line-height:1.3;margin:5px 0 4px;color:var(--navy)}
+.sc-title a:hover{color:var(--red)}
+.sc-meta{font-size:11px;color:var(--gray-400)}
+
+/* SEC HEADER */
+.sec-hd{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--navy)}
+.sec-hd h2{font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--navy)}
+.sec-line{flex:1;height:1px;background:var(--gray-200)}
+.sec-more{font-size:12px;color:var(--red);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.sec-more:hover{text-decoration:underline}
+
+/* MAIN GRID */
+.main-section{padding:36px 0}
+.content-grid{display:grid;grid-template-columns:1fr 310px;gap:36px;align-items:start}
+
+/* ARTICLE CARDS */
+.article-row{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:28px}
+.ac{}
+.ac-img{aspect-ratio:16/9;object-fit:cover;border-radius:3px;width:100%;background:var(--gray-200);margin-bottom:10px;transition:opacity .2s}
+.ac:hover .ac-img{opacity:.9}
+.ac-title{font-family:var(--font-head);font-size:16px;font-weight:700;line-height:1.3;margin:7px 0 5px;color:var(--navy)}
+.ac-title a:hover{color:var(--red)}
+.ac-exc{font-size:13px;color:var(--gray-600);line-height:1.6;margin-bottom:7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ac-meta{font-size:11px;color:var(--gray-400)}
+
+/* ANALYSIS CARD */
+.analysis-card{border:var(--border);border-radius:4px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;margin-bottom:28px}
+.an-img{aspect-ratio:4/3;object-fit:cover;width:100%;height:100%;background:var(--gray-200)}
+.an-body{padding:28px;display:flex;flex-direction:column;justify-content:center;background:var(--gray-50)}
+.an-body .title{font-family:var(--font-head);font-size:21px;font-weight:700;line-height:1.25;color:var(--navy);margin:10px 0 12px}
+.an-body .exc{font-family:var(--font-read);font-size:13px;color:var(--gray-600);line-height:1.7;margin-bottom:14px}
+.read-more{font-size:13px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:6px;transition:gap .15s}
+.read-more:hover{gap:10px}
+
+/* TOPIC PILLS */
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.pill{padding:6px 16px;border-radius:100px;font-size:12px;font-weight:600;border:var(--border);color:var(--gray-600);background:#fff;transition:all .15s}
+.pill:hover,.pill.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* VIDEO SECTION */
+.video-section{background:var(--navy);padding:40px 0;color:#fff}
+.video-section .sec-hd{border-bottom-color:rgba(255,255,255,.2)}
+.video-section .sec-hd h2{color:#fff}
+.video-section .sec-line{background:rgba(255,255,255,.1)}
+.video-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:18px}
+.vc{cursor:pointer}
+.vthumb{position:relative;aspect-ratio:16/9;border-radius:4px;overflow:hidden;background:rgba(255,255,255,.08);margin-bottom:10px}
+.vthumb img{width:100%;height:100%;object-fit:cover}
+.vplay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);transition:background .2s}
+.vc:hover .vplay{background:rgba(0,0,0,.52)}
+.play-btn{width:50px;height:50px;background:rgba(255,255,255,.95);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;transition:transform .2s;color:var(--navy)}
+.vc:hover .play-btn{transform:scale(1.1)}
+.vdur{position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.8);color:#fff;font-size:11px;font-weight:600;padding:2px 6px;border-radius:2px}
+.vtitle{font-family:var(--font-head);font-size:15px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:5px}
+.vmeta{font-size:11px;color:rgba(255,255,255,.5)}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal-box{background:#000;border-radius:6px;overflow:hidden;width:90%;max-width:860px;position:relative}
+.modal-close{position:absolute;top:-40px;right:0;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;line-height:1}
+.modal-iframe{width:100%;aspect-ratio:16/9;border:none}
+
+/* AI GENERATOR */
+.gen-section{background:var(--blue-soft);border-top:var(--border);border-bottom:var(--border);padding:40px 0}
+.gen-box{background:#fff;border:var(--border);border-radius:6px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.06)}
+.gen-hd{background:var(--navy);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:14px}
+.gen-icon{width:36px;height:36px;background:var(--red);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.gen-hd-text h3{font-family:var(--font-head);font-size:20px;font-weight:700}
+.gen-hd-text p{font-size:13px;opacity:.65;margin-top:2px}
+.gen-input-row{display:flex;border-bottom:var(--border)}
+.gen-input{flex:1;border:none;outline:none;padding:15px 20px;font-size:15px;font-family:var(--font-body);color:var(--text);background:#fff}
+.gen-input::placeholder{color:var(--gray-400)}
+.gen-btn{background:var(--red);color:#fff;border:none;padding:0 26px;font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;transition:background .2s;white-space:nowrap}
+.gen-btn:hover{background:#c0171f}
+.gen-btn:disabled{background:var(--gray-400);cursor:not-allowed}
+.gen-tabs{display:flex;border-bottom:var(--border);background:var(--gray-50)}
+.gen-tab{flex:1;padding:11px 12px;font-size:13px;font-weight:600;color:var(--gray-600);border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;display:flex;align-items:center;justify-content:center;gap:5px}
+.gen-tab.active{color:var(--red);border-bottom-color:var(--red);background:#fff}
+.gen-tab:hover:not(.active){color:var(--navy)}
+.gen-panels{padding:22px;min-height:190px}
+.gen-panel{display:none}
+.gen-panel.active{display:block}
+.gen-out{font-family:var(--font-read);font-size:14px;line-height:1.8;color:var(--gray-800);white-space:pre-wrap;word-break:break-word;min-height:150px}
+.gen-ph{color:var(--gray-400);font-family:var(--font-body);font-size:14px;display:flex;align-items:center;justify-content:center;min-height:150px;text-align:center;flex-direction:column;gap:8px}
+.gen-ph .icon{font-size:34px;opacity:.35}
+.gen-foot{border-top:var(--border);padding:11px 22px;display:flex;align-items:center;justify-content:space-between;background:var(--gray-50)}
+.gen-status{font-size:12px;color:var(--gray-400)}
+.gen-actions{display:flex;gap:8px}
+.btn-copy,.btn-clr{font-size:12px;font-weight:600;padding:6px 16px;border-radius:3px;border:var(--border);background:#fff;color:var(--gray-600);transition:all .15s}
+.btn-copy:hover{border-color:var(--navy);color:var(--navy)}
+.btn-copy.copied{border-color:#059669;color:#059669}
+.loading-wrap{display:flex;align-items:center;gap:6px;color:var(--gray-400);font-size:13px;min-height:150px;justify-content:center}
+.ld{width:7px;height:7px;border-radius:50%;background:var(--red);animation:bnc 1.2s ease-in-out infinite}
+.ld:nth-child(2){animation-delay:.2s}.ld:nth-child(3){animation-delay:.4s}
+@keyframes bnc{0%,80%,100%{transform:translateY(0);opacity:.3}40%{transform:translateY(-6px);opacity:1}}
+
+/* SIDEBAR */
+.sidebar-widget{margin-bottom:28px}
+.wtitle{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray-400);margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid var(--navy)}
+.trending-list{list-style:none}
+.ti{display:flex;gap:10px;padding:10px 0;border-bottom:var(--border);align-items:flex-start}
+.ti:last-child{border-bottom:none}
+.tnum{font-family:var(--font-head);font-size:22px;font-weight:800;color:var(--gray-200);line-height:1;min-width:24px}
+.ttitle{font-size:13px;font-weight:600;color:var(--navy);line-height:1.4}
+.ttitle a:hover{color:var(--red)}
+.tmeta{font-size:11px;color:var(--gray-400);margin-top:3px}
+.nl-widget{background:var(--navy);color:#fff;padding:22px;border-radius:4px}
+.nl-widget h3{font-family:var(--font-head);font-size:19px;margin-bottom:8px}
+.nl-widget p{font-size:13px;opacity:.7;margin-bottom:14px;line-height:1.6}
+.nl-input{width:100%;padding:9px 13px;border:none;border-radius:3px;font-size:13px;font-family:var(--font-body);margin-bottom:9px;outline:none}
+.nl-btn{width:100%;background:var(--red);color:#fff;border:none;padding:9px;border-radius:3px;font-weight:700;font-size:13px;transition:background .2s}
+.nl-btn:hover{background:#c0171f}
+.social-links{display:flex;gap:8px}
+.sbtn{flex:1;text-align:center;padding:9px 6px;border-radius:3px;font-size:12px;font-weight:700;color:#fff;transition:opacity .2s}
+.sbtn:hover{opacity:.85}
+.s-x{background:#000}.s-yt{background:#ff0000}.s-tg{background:#0088cc}.s-li{background:#0a66c2}
+
+/* FOOTER */
+footer{background:var(--navy);color:rgba(255,255,255,.7);padding:48px 0 24px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px}
+.fb-logo{font-family:var(--font-head);font-size:28px;font-weight:800;color:#fff}
+.fb-logo span{color:var(--red)}
+.fb p{font-size:13px;margin-top:10px;line-height:1.7}
+.fc h4{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:12px}
+.fc ul{list-style:none}
+.fc ul li{margin-bottom:9px}
+.fc ul li a{font-size:13px;transition:color .15s}
+.fc ul li a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:22px;display:flex;align-items:center;justify-content:space-between;font-size:12px;flex-wrap:wrap;gap:12px}
+.fbl{display:flex;gap:18px}
+.fbl a:hover{color:#fff}
+
+/* TOAST */
+.toast{position:fixed;bottom:26px;right:26px;background:var(--navy);color:#fff;padding:11px 18px;border-radius:4px;font-size:13px;z-index:9999;transform:translateY(60px);opacity:0;transition:all .3s;border-left:3px solid var(--red)}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .hero-grid,.content-grid{grid-template-columns:1fr}
+  .side-stack{display:grid;grid-template-columns:repeat(2,1fr)}
+  .sidebar{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .logo{font-size:26px}
+  .hdate{display:none}
+  .hero-grid,.article-row,.video-grid,.analysis-card,.side-stack,.sidebar,.footer-grid{grid-template-columns:1fr}
+  .gen-tabs{overflow-x:auto}
+  .gen-tab{font-size:11px;padding:10px 8px}
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- VIDEO MODAL -->
+<div class="modal-overlay" id="videoModal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeVideoModal()">✕</button>
+    <iframe class="modal-iframe" id="modalIframe" src="" allowfullscreen allow="autoplay"></iframe>
+  </div>
+</div>
+
+<!-- TOP TICKER -->
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-inner">
+      <span class="topbar-label">🔴 LIVE</span>
+      <div class="ticker-wrap">
+        <div class="ticker-track">
+          <span class="tick">OpenAI signs Pentagon AI deal — backlash intensifies</span>
+          <span class="tick">NVIDIA crosses $3.8T market cap on AI demand surge</span>
+          <span class="tick">India AI Mission allocates ₹10,372 Cr for 2026</span>
+          <span class="tick">EU AI Act Phase 2 enforcement begins April 2026</span>
+          <span class="tick">Google Gemini 2.5 Pro tops new coding benchmark</span>
+          <span class="tick">China DeepSeek R2 reportedly outperforms GPT-5 on math</span>
+          <span class="tick">OpenAI signs Pentagon AI deal — backlash intensifies</span>
+          <span class="tick">NVIDIA crosses $3.8T market cap on AI demand surge</span>
+          <span class="tick">India AI Mission allocates ₹10,372 Cr for 2026</span>
+          <span class="tick">EU AI Act Phase 2 enforcement begins April 2026</span>
+          <span class="tick">Google Gemini 2.5 Pro tops new coding benchmark</span>
+          <span class="tick">China DeepSeek R2 reportedly outperforms GPT-5 on math</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="container">
+    <div class="header-main">
+      <span class="hdate" id="hdate"></span>
+      <div>
+        <div class="logo">AI<span>PULSE</span></div>
+        <div class="logo-tag">Ahead of the Curve · AI News & Analysis</div>
+      </div>
+      <div class="hactions">
+        <button class="btn-sub">Subscribe Free</button>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <nav>
+      <ul class="nav-ul">
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#news">Latest News</a></li>
+        <li><a href="#videos">Videos</a></li>
+        <li><a href="#generator">AI Generator</a></li>
+        <li><a href="#">Markets</a></li>
+        <li><a href="#">Deep Dives</a></li>
+        <li><a href="#">India Focus</a></li>
+        <li><a href="#">Geopolitics</a></li>
+        <li><a href="#">Startups</a></li>
+        <li><a href="#">Research</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- MARKETS BAR -->
+<div class="markets-bar">
+  <div class="container">
+    <div class="markets-inner">
+      <div class="mi"><span class="mn">NVDA</span><span class="mp">$924.60</span><span class="mc up">▲ +3.2%</span></div>
+      <div class="mi"><span class="mn">MSFT</span><span class="mp">$418.20</span><span class="mc up">▲ +1.1%</span></div>
+      <div class="mi"><span class="mn">GOOGL</span><span class="mp">$172.40</span><span class="mc down">▼ -0.4%</span></div>
+      <div class="mi"><span class="mn">META</span><span class="mp">$587.90</span><span class="mc up">▲ +2.3%</span></div>
+      <div class="mi"><span class="mn">AMZN</span><span class="mp">$198.10</span><span class="mc up">▲ +0.8%</span></div>
+      <div class="mi"><span class="mn">NIFTY IT</span><span class="mp">37,842</span><span class="mc up">▲ +1.5%</span></div>
+      <div class="mi"><span class="mn">SENSEX</span><span class="mp">74,119</span><span class="mc up">▲ +0.6%</span></div>
+      <div class="mi"><span class="mn">BTC</span><span class="mp">$87,200</span><span class="mc down">▼ -0.9%</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-img-wrap">
+          <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=900&q=80" alt="OpenAI Pentagon Deal" loading="eager"/>
+        </div>
+        <p class="img-caption">OpenAI Headquarters, San Francisco · Reuters</p>
+        <div class="htag-row"><span class="tag">Breaking</span><span class="tag navy">Geopolitics</span></div>
+        <h1 class="hero-title"><a href="#">OpenAI Signs Pentagon AI Deal — ChatGPT Uninstalls Jump 295% Overnight</a></h1>
+        <p class="hero-exc">OpenAI has agreed to deploy its models in classified U.S. military operations, breaking from Anthropic which refused the same deal. The backlash was instant, sending Claude to #1 on the App Store and triggering an executive resignation.</p>
+        <div class="hero-meta">
+          <span class="author">Rahul Sharma</span>
+          <span class="dot">·</span>
+          <span>March 25, 2026</span>
+          <span class="dot">·</span>
+          <span>6 min read</span>
+        </div>
+      </div>
+      <div class="side-stack">
+        <div class="side-card">
+          <img class="sc-img" src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=200&q=75" alt="NVIDIA" loading="lazy"/>
+          <div>
+            <span class="tag blue">Markets</span>
+            <div class="sc-title"><a href="#">NVIDIA Crosses $3.8T as AI Data Center Spending Hits Record High</a></div>
+            <div class="sc-meta">2 hours ago · 4 min read</div>
+          </div>
+        </div>
+        <div class="side-card">
+          <img class="sc-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&q=75" alt="India AI" loading="lazy"/>
+          <div>
+            <span class="tag green">India Focus</span>
+            <div class="sc-title"><a href="#">India's ₹10,372 Cr AI Mission: Which States Benefit Most?</a></div>
+            <div class="sc-meta">4 hours ago · 5 min read</div>
+          </div>
+        </div>
+        <div class="side-card">
+          <img class="sc-img" src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=200&q=75" alt="EU AI Act" loading="lazy"/>
+          <div>
+            <span class="tag">Regulation</span>
+            <div class="sc-title"><a href="#">EU AI Act Phase 2: What Every Indian Tech Company Must Know Now</a></div>
+            <div class="sc-meta">6 hours ago · 7 min read</div>
+          </div>
+        </div>
+        <div class="side-card">
+          <img class="sc-img" src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=200&q=75" alt="Startup" loading="lazy"/>
+          <div>
+            <span class="tag navy">Startups</span>
+            <div class="sc-title"><a href="#">Sarvam AI Raises $41M Series B — India's ChatGPT Moment?</a></div>
+            <div class="sc-meta">8 hours ago · 3 min read</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<section class="main-section" id="news">
+  <div class="container">
+    <div class="content-grid">
+      <div>
+        <div class="pills">
+          <button class="pill active" onclick="setPill(this)">All Stories</button>
+          <button class="pill" onclick="setPill(this)">🤖 Technical</button>
+          <button class="pill" onclick="setPill(this)">💰 Investment</button>
+          <button class="pill" onclick="setPill(this)">🌏 Geopolitics</button>
+          <button class="pill" onclick="setPill(this)">🇮🇳 India</button>
+          <button class="pill" onclick="setPill(this)">🔬 Research</button>
+        </div>
+
+        <div class="sec-hd">
+          <h2>Latest Stories</h2>
+          <span class="sec-line"></span>
+          <a href="#" class="sec-more">View All →</a>
+        </div>
+
+        <div class="article-row">
+          <div class="ac">
+            <img class="ac-img" src="https://images.unsplash.com/photo-1666597107756-ef489e9f1f09?w=500&q=75" alt="Gemini 2.5" loading="lazy"/>
+            <span class="tag blue">Technical</span>
+            <div class="ac-title"><a href="#">Gemini 2.5 Pro Tops Coding Benchmarks — Beats GPT-5 on 7 of 10 Tests</a></div>
+            <p class="ac-exc">Google's latest model rewrites what's possible in code generation, scoring 94.2% on HumanEval and introducing a new deep thinking reasoning mode.</p>
+            <div class="ac-meta">March 25, 2026 · 5 min read</div>
+          </div>
+          <div class="ac">
+            <img class="ac-img" src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=500&q=75" alt="China AI" loading="lazy"/>
+            <span class="tag">Geopolitics</span>
+            <div class="ac-title"><a href="#">DeepSeek R2 Leak: China's New Model Could Reshape the Chip War</a></div>
+            <p class="ac-exc">Leaked benchmarks suggest DeepSeek's upcoming model achieves frontier performance at a fraction of the compute cost, threatening US export controls.</p>
+            <div class="ac-meta">March 25, 2026 · 6 min read</div>
+          </div>
+          <div class="ac">
+            <img class="ac-img" src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=500&q=75" alt="Robots" loading="lazy"/>
+            <span class="tag navy">Robotics</span>
+            <div class="ac-title"><a href="#">Figure AI's New Humanoid Can Learn Any Task in Just 4 Hours</a></div>
+            <p class="ac-exc">The OpenAI and NVIDIA-backed startup has achieved a breakthrough in generalised robot learning that could disrupt global factory labour markets.</p>
+            <div class="ac-meta">March 24, 2026 · 4 min read</div>
+          </div>
+        </div>
+
+        <div class="analysis-card">
+          <img class="an-img" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80" alt="Analysis" loading="lazy"/>
+          <div class="an-body">
+            <span class="tag gray">Deep Analysis</span>
+            <div class="title">The $730 Billion Question: Is OpenAI Worth Its Valuation?</div>
+            <p class="exc">With Amazon, SoftBank, and Nvidia backing the raise, OpenAI's pre-money valuation now exceeds the GDP of 150 nations. We break down whether the numbers make sense.</p>
+            <a href="#" class="read-more">Read Full Analysis →</a>
+          </div>
+        </div>
+
+        <div class="article-row">
+          <div class="ac">
+            <img class="ac-img" src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&q=75" alt="AI Jobs India" loading="lazy"/>
+            <span class="tag green">India Focus</span>
+            <div class="ac-title"><a href="#">AI Creating 2.3M Jobs in India — But 4.1M Are at Risk: NASSCOM</a></div>
+            <p class="ac-exc">A new report maps which sectors face the sharpest disruption and which cities are best positioned to absorb the massive workforce shift ahead.</p>
+            <div class="ac-meta">March 24, 2026 · 8 min read</div>
+          </div>
+          <div class="ac">
+            <img class="ac-img" src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=500&q=75" alt="Llama 4" loading="lazy"/>
+            <span class="tag blue">Open Source</span>
+            <div class="ac-title"><a href="#">Meta's Llama 4 Is Out — Bigger Than GPT-4 Was at Launch</a></div>
+            <p class="ac-exc">Meta releases its largest open-weight model yet with a 10M token context window, free for commercial use — reshaping the economics of AI startups everywhere.</p>
+            <div class="ac-meta">March 23, 2026 · 5 min read</div>
+          </div>
+          <div class="ac">
+            <img class="ac-img" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&q=75" alt="AI Hallucinations" loading="lazy"/>
+            <span class="tag">Safety</span>
+            <div class="ac-title"><a href="#">AI Hallucinations Fall 60% in 2025 — But the Remaining 40% Are More Dangerous</a></div>
+            <p class="ac-exc">MIT research shows errors are now more convincing and harder to detect, creating new risks even as overall accuracy improves dramatically.</p>
+            <div class="ac-meta">March 23, 2026 · 6 min read</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside>
+        <div class="sidebar-widget">
+          <div class="wtitle">Trending Now</div>
+          <ul class="trending-list">
+            <li class="ti"><span class="tnum">01</span><div><div class="ttitle"><a href="#">OpenAI Pentagon Deal Explained</a></div><div class="tmeta">48,200 reads today</div></div></li>
+            <li class="ti"><span class="tnum">02</span><div><div class="ttitle"><a href="#">NVIDIA Q1 2026 Earnings Preview</a></div><div class="tmeta">31,700 reads today</div></div></li>
+            <li class="ti"><span class="tnum">03</span><div><div class="ttitle"><a href="#">India's Top 10 AI Startups 2026</a></div><div class="tmeta">24,900 reads today</div></div></li>
+            <li class="ti"><span class="tnum">04</span><div><div class="ttitle"><a href="#">What Is Agentic AI? A Simple Guide</a></div><div class="tmeta">19,400 reads today</div></div></li>
+            <li class="ti"><span class="tnum">05</span><div><div class="ttitle"><a href="#">EU AI Act: Full Compliance Checklist</a></div><div class="tmeta">15,100 reads today</div></div></li>
+          </ul>
+        </div>
+        <div class="sidebar-widget">
+          <div class="nl-widget">
+            <h3>Daily AI Briefing</h3>
+            <p>The 5 AI stories that matter, every morning. Free, forever.</p>
+            <input class="nl-input" type="email" placeholder="your@email.com" id="nlEmail"/>
+            <button class="nl-btn" onclick="subscribe()">Get Free Briefing →</button>
+          </div>
+        </div>
+        <div class="sidebar-widget">
+          <div class="wtitle">Follow AI Pulse</div>
+          <div class="social-links">
+            <a href="#" class="sbtn s-x">𝕏 Twitter</a>
+            <a href="#" class="sbtn s-yt">▶ YouTube</a>
+          </div>
+          <div class="social-links" style="margin-top:8px">
+            <a href="#" class="sbtn s-tg">✈ Telegram</a>
+            <a href="#" class="sbtn s-li">in LinkedIn</a>
+          </div>
+        </div>
+        <div class="sidebar-widget">
+          <div class="wtitle">Sponsored</div>
+          <div style="background:var(--gray-100);border-radius:4px;padding:16px;text-align:center;border:var(--border)">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=280&q=70" alt="Ad" style="border-radius:3px;margin-bottom:10px"/>
+            <p style="font-size:12px;color:var(--gray-600);line-height:1.5">AI-powered analytics for your business. Try DataSense free for 30 days.</p>
+            <button style="margin-top:10px;background:var(--blue);color:#fff;border:none;padding:7px 18px;border-radius:3px;font-size:12px;font-weight:700;cursor:pointer">Learn More</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section class="video-section" id="videos">
+  <div class="container">
+    <div class="sec-hd">
+      <h2>🎬 Videos & Explainers</h2>
+      <span class="sec-line"></span>
+      <a href="https://youtube.com" target="_blank" class="sec-more" style="color:rgba(255,255,255,.55)">YouTube Channel →</a>
+    </div>
+    <div class="video-grid">
+      <div class="vc" onclick="openVideo('https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1')">
+        <div class="vthumb">
+          <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=700&q=75" alt="OpenAI Pentagon"/>
+          <div class="vplay"><div class="play-btn">▶</div></div>
+          <span class="vdur">8:42</span>
+        </div>
+        <div style="margin-bottom:6px"><span class="tag">New</span></div>
+        <div class="vtitle">OpenAI's Pentagon Deal: What It Really Means for AI Safety</div>
+        <div class="vmeta">234K views · 2 days ago</div>
+      </div>
+      <div class="vc" onclick="openVideo('https://www.youtube.com/embed/aircAruvnKk?autoplay=1')">
+        <div class="vthumb">
+          <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=500&q=75" alt="NVIDIA"/>
+          <div class="vplay"><div class="play-btn">▶</div></div>
+          <span class="vdur">5:18</span>
+        </div>
+        <div class="vtitle">Why NVIDIA's Stock Won't Stop Climbing</div>
+        <div class="vmeta">118K views · 3 days ago</div>
+      </div>
+      <div class="vc" onclick="openVideo('https://www.youtube.com/embed/WXuK6gekU1Y?autoplay=1')">
+        <div class="vthumb">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=75" alt="India AI"/>
+          <div class="vplay"><div class="play-btn">▶</div></div>
+          <span class="vdur">11:05</span>
+        </div>
+        <div class="vtitle">India's AI Mission: Will ₹10,372 Cr Be Enough?</div>
+        <div class="vmeta">89K views · 5 days ago</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI GENERATOR -->
+<section class="gen-section" id="generator">
+  <div class="container">
+    <div class="sec-hd" style="margin-bottom:18px">
+      <h2>⚡ AI Content Generator</h2>
+      <span class="sec-line"></span>
+      <span style="font-size:12px;color:var(--gray-400)">Powered by Google Gemini</span>
+    </div>
+    <div class="gen-box">
+      <div class="gen-hd">
+        <div class="gen-icon">✍️</div>
+        <div class="gen-hd-text">
+          <h3>Generate Your Full Content Pack</h3>
+          <p>Enter any AI news topic — get a complete article, X thread, Instagram caption & YouTube script in seconds</p>
+        </div>
+      </div>
+      <div class="gen-input-row">
+        <input class="gen-input" id="genInput" type="text" placeholder="e.g. OpenAI signs Pentagon deal, NVIDIA hits $4 trillion, India AI Mission funding..." onkeydown="if(event.key==='Enter')doGenerate()"/>
+        <button class="gen-btn" id="genBtn" onclick="doGenerate()">Generate ⚡</button>
+      </div>
+      <div class="gen-tabs">
+        <button class="gen-tab active" onclick="switchTab(0)" id="tab0">📰 Article</button>
+        <button class="gen-tab" onclick="switchTab(1)" id="tab1">𝕏 X Thread</button>
+        <button class="gen-tab" onclick="switchTab(2)" id="tab2">📸 Instagram</button>
+        <button class="gen-tab" onclick="switchTab(3)" id="tab3">🎬 YouTube Script</button>
+      </div>
+      <div class="gen-panels">
+        <div class="gen-panel active" id="panel0"><div class="gen-ph"><span class="icon">📰</span>Enter a topic above and click Generate</div></div>
+        <div class="gen-panel" id="panel1"><div class="gen-ph"><span class="icon">𝕏</span>Your X thread will appear here</div></div>
+        <div class="gen-panel" id="panel2"><div class="gen-ph"><span class="icon">📸</span>Your Instagram caption will appear here</div></div>
+        <div class="gen-panel" id="panel3"><div class="gen-ph"><span class="icon">🎬</span>Your YouTube Shorts script will appear here</div></div>
+      </div>
+      <div class="gen-foot">
+        <span class="gen-status" id="genStatus">Ready — enter a topic to begin</span>
+        <div class="gen-actions">
+          <button class="btn-copy" id="copyBtn" onclick="copyActive()">Copy</button>
+          <button class="btn-copy btn-clr" onclick="clearAll()">Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="fb">
+        <div class="fb-logo">AI<span>PULSE</span></div>
+        <p>Ahead of the curve AI news, analysis, and intelligence for India and the world. Trusted by 120,000+ readers daily.</p>
+        <div class="social-links" style="margin-top:14px">
+          <a href="#" class="sbtn s-x">𝕏</a>
+          <a href="#" class="sbtn s-yt">▶</a>
+          <a href="#" class="sbtn s-tg">✈</a>
+          <a href="#" class="sbtn s-li">in</a>
+        </div>
+      </div>
+      <div class="fc"><h4>Coverage</h4><ul><li><a href="#">AI Research</a></li><li><a href="#">Tech Giants</a></li><li><a href="#">Startups</a></li><li><a href="#">Geopolitics</a></li><li><a href="#">India Focus</a></li><li><a href="#">Markets</a></li></ul></div>
+      <div class="fc"><h4>Resources</h4><ul><li><a href="#">AI Glossary</a></li><li><a href="#">Newsletter</a></li><li><a href="#">Podcast</a></li><li><a href="#">Events</a></li><li><a href="#">Reports</a></li></ul></div>
+      <div class="fc"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Advertise</a></li><li><a href="#">Contact</a></li><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AI Pulse. All rights reserved.</span>
+      <div class="fbl"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a><a href="#">RSS</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── CONFIG ── Replace with your NEW key after revoking the shared one ── */
+const GEMINI_KEY = "YOUR_NEW_GEMINI_API_KEY_HERE";
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+
+/* DATE */
+document.getElementById('hdate').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+/* TOAST */
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
+
+/* VIDEO */
+function openVideo(url){document.getElementById('modalIframe').src=url;document.getElementById('videoModal').classList.add('open');document.body.style.overflow='hidden'}
+function closeVideoModal(){document.getElementById('videoModal').classList.remove('open');document.getElementById('modalIframe').src='';document.body.style.overflow=''}
+function closeModal(e){if(e.target===document.getElementById('videoModal'))closeVideoModal()}
+
+/* PILLS */
+function setPill(el){document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));el.classList.add('active')}
+
+/* NEWSLETTER */
+function subscribe(){const v=document.getElementById('nlEmail').value;if(!v||!v.includes('@')){toast('Enter a valid email');return}toast('✅ Subscribed! Check your inbox.');document.getElementById('nlEmail').value=''}
+
+/* TABS */
+let activeTab=0;const outputs=['','','',''];
+function switchTab(i){document.querySelectorAll('.gen-tab').forEach((t,j)=>t.classList.toggle('active',i===j));document.querySelectorAll('.gen-panel').forEach((p,j)=>p.classList.toggle('active',i===j));activeTab=i}
+
+function renderPanel(i,text){
+  outputs[i]=text;
+  const p=document.getElementById('panel'+i);
+  const ph=['📰 Article will appear here','𝕏 Your X thread will appear here','📸 Your Instagram caption here','🎬 Your YouTube script here'];
+  p.innerHTML=text?`<div class="gen-out">${esc(text)}</div>`:`<div class="gen-ph"><span class="icon">${['📰','𝕏','📸','🎬'][i]}</span>${ph[i]}</div>`;
+}
+function showLoading(i){document.getElementById('panel'+i).innerHTML=`<div class="loading-wrap"><div class="ld"></div><div class="ld"></div><div class="ld"></div><span style="margin-left:6px">Generating...</span></div>`}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function copyActive(){const t=outputs[activeTab];if(!t){toast('Nothing to copy yet');return}navigator.clipboard.writeText(t).then(()=>{const b=document.getElementById('copyBtn');b.textContent='✓ Copied!';b.classList.add('copied');toast('Copied!');setTimeout(()=>{b.textContent='Copy';b.classList.remove('copied')},2000)})}
+function clearAll(){[0,1,2,3].forEach(i=>renderPanel(i,''));document.getElementById('genInput').value='';document.getElementById('genStatus').textContent='Ready — enter a topic to begin';toast('Cleared')}
+
+/* GEMINI */
+async function callGemini(prompt){
+  const r=await fetch(GEMINI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.75,maxOutputTokens:1400}})});
+  if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e?.error?.message||`API error ${r.status}`)}
+  const d=await r.json();
+  return d.candidates?.[0]?.content?.parts?.[0]?.text?.trim()||''
+}
+
+const P={
+  article:t=>`You are a senior AI news editor for a professional media platform like Reuters or TechCrunch.
+Write a clear 400-word news article about: "${t}"
+
+HEADLINE: [SEO-friendly, factual headline]
+
+KEY TAKEAWAYS:
+• [Point 1]
+• [Point 2]  
+• [Point 3]
+
+ARTICLE:
+[4 paragraphs: What happened, Why it matters, Financial/market angle, India and emerging markets impact]
+
+MARKET IMPACT:
+[2 sentences]`,
+
+  thread:t=>`You are a viral AI news writer on X (Twitter).
+Write a 6-tweet thread about: "${t}"
+
+Tweet 1 — HOOK:
+[One bold sentence that stops scrolling]
+
+Tweet 2 — WHAT HAPPENED:
+[Clear facts, no hashtags]
+
+Tweet 3 — MONEY ANGLE:
+[Funding, valuations, stock impact, no hashtags]
+
+Tweet 4 — GEOPOLITICS:
+[Countries and regulations, no hashtags]
+
+Tweet 5 — INDIA IMPACT:
+[Specific consequences for India's tech sector]
+
+Tweet 6 — CTA:
+[Engaging yes/no question. End: Follow @AIPulseIndia for daily AI news]`,
+
+  ig:t=>`You are a viral Instagram content creator for an AI news page.
+Write a caption about: "${t}"
+
+CAPTION:
+[120 words max. Emoji-rich. Hook first line. Explain what happened and why it affects everyday people. End with a comment-driving question. Short punchy paragraphs.]
+
+HASHTAGS:
+[Exactly 15 hashtags on one line, space-separated]`,
+
+  yt:t=>`You are a YouTube Shorts scriptwriter for an AI news channel.
+Write a 60-second script about: "${t}"
+
+[0-3 sec — HOOK]
+[Bold verbal hook to camera]
+
+[B-Roll: what to show on screen]
+[4-20 sec — WHAT HAPPENED]
+[2-3 clear sentences]
+
+[B-Roll: what to show on screen]
+[21-40 sec — WHY IT MATTERS]
+[Financial or societal impact]
+
+[B-Roll: what to show on screen]
+[41-55 sec — INDIA ANGLE]
+[How this affects India specifically]
+
+[56-60 sec — CTA]
+[Yes/No question to comment. Tell them to follow for daily AI news]`
+};
+
+async function doGenerate(){
+  const topic=document.getElementById('genInput').value.trim();
+  if(!topic){toast('Please enter a topic first');return}
+  if(GEMINI_KEY==='YOUR_NEW_GEMINI_API_KEY_HERE'){toast('⚠️ Add your new Gemini API key in the code first');return}
+  const btn=document.getElementById('genBtn');
+  btn.disabled=true;btn.textContent='Generating...';
+  document.getElementById('genStatus').textContent='Generating all 4 outputs simultaneously...';
+  [0,1,2,3].forEach(i=>showLoading(i));
+  const results=await Promise.allSettled([callGemini(P.article(topic)),callGemini(P.thread(topic)),callGemini(P.ig(topic)),callGemini(P.yt(topic))]);
+  let ok=0;
+  results.forEach((r,i)=>{
+    if(r.status==='fulfilled'&&r.value){renderPanel(i,r.value);ok++}
+    else renderPanel(i,`Error: ${r.reason?.message||'Generation failed'}. Check your API key and try again.`)
+  });
+  btn.disabled=false;btn.textContent='Generate ⚡';
+  document.getElementById('genStatus').textContent=ok===4?`✅ All 4 outputs ready for: "${topic.slice(0,45)}..."`:`⚠️ ${ok}/4 outputs generated`;
+  if(ok>0)toast(`✅ ${ok} content pieces ready!`)
+}
+</script>
+</body>
+</html>
